@@ -5,7 +5,7 @@
 #include <string.h>
 
 int main(void){
-  printf("initializing first person...");
+  printf("initializing testing...\n");
   person_t *person1 = malloc(sizeof(person_t));
   person_t *person2 = malloc(sizeof(person_t));
 
@@ -31,7 +31,10 @@ int main(void){
   add_friend(person3, person1 -> friends);
   person_t *p = find_friend("person3handle", person1 -> friends);
   printf("%s should be joseph\n", p->firstname);
+  printf("%s should be lastname3\n", p->lastname);
   
   p = find_friend("masterjenkins", person1 -> friends);
   printf("%s should be god\n", p -> firstname);
+  printf("%s should be name\n", p->lastname);
+  free(person1); free(person2); free(person3);
 }

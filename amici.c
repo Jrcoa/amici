@@ -23,8 +23,8 @@
 void l_ptr_str_print(const void* key, const void* value){
     char *k = (char*)key;
     person_t *v = (person_t*)value;
-    printf("%s", k);
-    printf("%s", (v) -> firstname); 
+    printf("%s : %s", k, v -> firstname);
+
 }
 
 
@@ -40,18 +40,22 @@ void delete_l_ptr_str(void* key, void* value){
 //    l_ptr_hash, l_ptr_equals, l_ptr_str_print, delete_l_ptr_str
 //);
 //Table h = ht_create(long_hash, long_equals, long_str_print, NULL);
-int add_person(char* firstname, char* lastname, char* handle, Table handles){
+int add_person(const char* firstname, const char* lastname, const char* handle, Table handles){
    
     person_t *new = malloc(sizeof(person_t));
-
+    (new->firstname) = malloc(MAX_NAME_SIZE);
+    (new->lastname) = malloc(MAX_NAME_SIZE);
+    (new->handle) = malloc(MAX_NAME_SIZE);
+    
  
-    new -> firstname = firstname;
-    new -> lastname = lastname;
-    new -> handle = handle;
+    strncpy(new -> firstname, firstname, strlen(firstname) + 1);
+    strncpy(new -> lastname, lastname,  strlen(lastname) + 1);
+    strncpy(new -> handle, handle, strlen(handle) + 1);
     new -> friend_count = 0;
     new -> max_friends = MAX_FRIENDS;
 
-    ht_put(handles,(void*)(handle), new);
+    ht_put(handles,(const void*)(handle), (void*)new);
+    
     //const char * lookup = "jrc4615";
 
     //lookup = (void*)lookup;
@@ -79,11 +83,10 @@ int main(void){
         char* tok = strtok(command, " ");
                 
         if(strcmp(tok, "add") == 0){
-            char *firstname = strtok(NULL, " ");
-            char *lastname = strtok(NULL, " ");
-            char *handle = strtok(NULL, " ");
-            
-            handle[strcspn(handle, "\n")] = 0;
+            char *firstname = strtok(NULL, " \n");
+            char *lastname = strtok(NULL, " \n");
+            char *handle = strtok(NULL, " \n");
+
             if(ht_has(handles, (void*)handle)){
                 //has handle, currently pushing right to stderr
                 fprintf(stderr, 
